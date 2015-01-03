@@ -13,12 +13,9 @@
 
 ActiveRecord::Schema.define(version: 20140531134330) do
 
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
-
-  create_table "cars", force: true do |t|
-    t.string   "make"
-    t.string   "colour"
+  create_table "cars", force: :cascade do |t|
+    t.string   "make",       limit: 255
+    t.string   "colour",     limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
   end

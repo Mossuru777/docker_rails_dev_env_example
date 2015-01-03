@@ -1,4 +1,5 @@
-FROM ubuntu:12.04
+FROM sameersbn/ubuntu:14.04.20141218
+MAINTAINER Yuki Matsukura "matsubokkuri@gmail.com"
 
 ENV DEBIAN_FRONTEND noninteractive
 

@@ -6,7 +6,7 @@ then
         echo "Commands:"
         echo "rc - Rails Console"
         echo "rdbm - Migrate Database"
-        echo "restore-db - Restore db from db/current.sql.zip"
+        echo "restore-db - Restoring drop db, migrate and put seed"
         echo "restart - Restart rails app after bundling gems" 
         echo "rebuild - Rebuild the docker container with latest Gemfile and restart"
         echo 'cmd "bundle exec something" - Run the command in quotes in /app' 
@@ -21,7 +21,7 @@ rc)  echo "Starting Console in Docker Container.."
 rdbm)  echo  "Running rake db:migrate in Docker container.."
     vagrant ssh -c "sh /app/docker/scripts/rdbm.sh"
     ;;
-restore-db)  echo  "Restoring db from db/current.sql.zip"
+restore-db)  echo  "Restoring drop db, migrate and put seed"
     vagrant ssh -c "sh /app/docker/scripts/restore-db.sh"
     ;;
 restart) echo  "Restarting Docker Rails Container"

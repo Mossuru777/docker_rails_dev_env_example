@@ -23,7 +23,7 @@ $start = <<SCRIPT
 docker start mysql
 docker start redis
 docker start rails
-docker run -v /app:/app --link redis:redis --link mysql:db --rm rails:latest bash -c "cd /app && sleep 2 && bundle exec rake db:migrate"
+docker run -v /app:/app --link redis:redis --link mysql:db --rm rails:latest bash -c "cd /app && sleep 3 && bundle exec rake db:migrate"
 SCRIPT
 
 VAGRANTFILE_API_VERSION = "2"

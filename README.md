@@ -1,4 +1,4 @@
-HR System
+Rails development using docker
 ====
 
 Local setup
@@ -10,6 +10,7 @@ Local setup
 
 
 - Download host OS image for docker host OS.
+
 ```
 % vagrant box add precise64 http://files.vagrantup.com/precise64.box
 ```
@@ -18,6 +19,7 @@ Local setup
 - Build Docker images and run containers.
   - This would take 30 minutes.
   - Password of your host OS is required to mount current directory by NFS.
+
 ```
 % vagrant up
 ```
@@ -44,28 +46,33 @@ cmd "bundle exec something" - Run the command in quotes in /app
 
 
 - To execute rspec
+
 ```
 % ./d cmd bundle exec rspec
 ```
 
 
 - To execute `bundle install`
+
 ```
 % ./d restart
 ```
 
 - To stop host machine, shutdown the Docker host OS on Virtualbox.
+
 ```
 % vagrant halt
 ```
 
 - Just want to get a rails server instance.
+
 ```
 $ docker run -it -v /app:/app --link redis:redis --link mysql:db rails:latest /bin/bash
 ```
 
 - To acquire console of rails server
   - To exit the console, `Ctrl + Z` or `Ctrl + C`
+
 ```
 $ docker attach --sig-proxy=false rails
 ```
@@ -78,6 +85,7 @@ Rebuild
 
 - Rebuild from VirtualBox VM
  - This takes 30 minutes.
+
 ```
 % vagrant destroy && vagrant up
 ```
@@ -86,6 +94,7 @@ Rebuild
   - This uses docker image cache.
   - `bundle install` will be ran.
   - This takes 5 minutes.
+
 ```
 % vagrant provision
 ```

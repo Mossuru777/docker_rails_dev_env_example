@@ -1,7 +1,6 @@
 #!/bin/bash
 set -e
 
-DB_NAME=${DB_NAME:-}
 DB_USER=${DB_USER:-}
 DB_PASS=${DB_PASS:-}
 
@@ -19,6 +18,16 @@ EOF
 cat > /etc/mysql/conf.d/mysql-skip-name-resolv.cnf <<EOF
 [mysqld]
 skip_name_resolve
+EOF
+
+
+# Enlarge key length
+# http://blog.kamipo.net/entry/2012/11/13/102024
+cat > /etc/mysql/conf.d/mysql-large-prefix.cnf <<EOF
+[mysqld]
+innodb_file_format = Barracuda
+innodb_file_per_table = 1
+innodb_large_prefix
 EOF
 
 # fix permissions and ownership of /var/lib/mysql
@@ -70,7 +79,7 @@ if [ ! -d /var/lib/mysql/mysql ]; then
 fi
 
 # create new user / database
-if [ -n "${DB_USER}" -o -n "${DB_NAME}" ]; then
+if [ -n "${DB_USER}" ]; then
   /usr/bin/mysqld_safe >/dev/null 2>&1 &
 
   # wait for mysql server to start (max 30 seconds)
@@ -85,15 +94,10 @@ if [ -n "${DB_USER}" -o -n "${DB_NAME}" ]; then
     sleep 1
   done
 
-  if [ -n "${DB_NAME}" ]; then
-    echo "Creating database \"${DB_NAME}\"..."
+  if [ -n "${DB_USER}" ]; then
+    echo "Granting access for user \"${DB_USER}\"..."
     mysql --defaults-file=/etc/mysql/debian.cnf \
-      -e "CREATE DATABASE IF NOT EXISTS \`${DB_NAME}\` DEFAULT CHARACTER SET \`utf8\` COLLATE \`utf8_unicode_ci\`;"
-    if [ -n "${DB_USER}" ]; then
-      echo "Granting access to database \"${DB_NAME}\" for user \"${DB_USER}\"..."
-      mysql --defaults-file=/etc/mysql/debian.cnf \
-        -e "GRANT ALL PRIVILEGES ON \`${DB_NAME}\`.* TO '${DB_USER}' IDENTIFIED BY '${DB_PASS}';"
-    fi
+      -e "GRANT ALL PRIVILEGES ON *.* TO '${DB_USER}' IDENTIFIED BY '${DB_PASS}';"
   fi
   /usr/bin/mysqladmin --defaults-file=/etc/mysql/debian.cnf shutdown
 fi

@@ -1,0 +1,19 @@
+rails:
+  build: .
+  volumes:
+    - ./:/app
+  ports:
+    - "3000:3000"
+  links:
+    - mysql:db
+    - redis
+
+mysql:
+  build ./docker/mysql
+  environment:
+    - DB_NAME=dpa_development
+    - DB_USER=docker
+    - DB_PASS=docker
+
+redis:
+  build: ./docker/redis

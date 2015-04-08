@@ -1,4 +1,4 @@
-FROM sameersbn/ubuntu:14.04.20141218
+FROM mossuru777/ubuntu:14.04-20150320
 MAINTAINER Mossuru777 "mossuru777@gmail.com"
 
 ENV DEBIAN_FRONTEND noninteractive

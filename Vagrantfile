@@ -1,6 +1,9 @@
 # Commands required to setup working docker enviro, link
 # containers etc.
 $setup = <<SCRIPT
+# Use Ubuntu JP mirror repository
+sed -i -e 's@http://archive\.ubuntu\.com/@http://jp.archive.ubuntu.com/@g' /etc/apt/sources.list
+
 # Stop and remove any existing containers
 docker stop $(docker ps -a -q)
 docker rm $(docker ps -a -q)

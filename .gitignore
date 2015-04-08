@@ -15,8 +15,11 @@
 /log/*.log
 /tmp
 
-# In a production application, we wouldn't 
+# In a production application, we wouldn't
 # include .env in version control
 # .env
 /.vagrant/
 /vendor/
+
+# Ignore .DS_Store
+.DS_Store

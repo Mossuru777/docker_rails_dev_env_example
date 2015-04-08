@@ -13,7 +13,7 @@ docker build -t redis /app/docker/redis/
 # Run and link the containers
 docker run -d --name mysql -e DB_NAME=dpa_development -e DB_USER=docker -e DB_PASS=docker mysql:latest
 docker run -d --name redis redis:latest
-docker run -d -p 3000:3000 -v /app:/app --link redis:redis --link mysql:db --name rails rails:latest
+docker run -d -p 3000:3000 -v /app:/app -v /persistent --link redis:redis --link mysql:db --name rails rails:latest
 
 SCRIPT
 
@@ -23,7 +23,6 @@ $start = <<SCRIPT
 docker start mysql
 docker start redis
 docker start rails
-docker run -v /app:/app --link redis:redis --link mysql:db --rm rails:latest bash -c "cd /app && sleep 3 && bundle exec rake db:create db:migrate"
 SCRIPT
 
 VAGRANTFILE_API_VERSION = "2"

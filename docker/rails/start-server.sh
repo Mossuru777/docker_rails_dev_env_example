@@ -1,5 +1,8 @@
 #!/bin/bash
-cd /app
-bundle install
-bundle exec unicorn -p 3000
 
+if [ ! -e /persistent/db_initialized ]; then
+    /setup_database.sh
+fi
+
+cd /app
+bundle exec unicorn -p 3000

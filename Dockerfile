@@ -21,33 +21,23 @@ RUN git clone https://github.com/sstephenson/ruby-build.git /tmp/ruby-build && \
 
 # Install ruby
 RUN ruby-build -v 2.2.0 /usr/local
- 
+
 # Install base gems
 RUN gem install bundler rubygems-bundler --no-rdoc --no-ri
- 
+
 # Regenerate binstubs
 RUN gem regenerate_binstubs
 
-# Rails app
-ADD docker/rails/start-server.sh /start-server.sh
-RUN chmod +x /start-server.sh
-# RUN mkdir /app
-
-# Preinstall majority of gems
-WORKDIR /tmp 
-ADD ./Gemfile Gemfile
-ADD ./Gemfile.lock Gemfile.lock
-RUN bundle install 
-
-
 ENV RAILS_ENV development
 
-WORKDIR /app
-RUN bundle install
-
+# Add DB setup script
 ADD ./docker/rails/setup_database.sh /setup_database.sh
 RUN chmod +x /setup_database.sh
 
-EXPOSE 3000
+# Add Rails app startup script
+ADD docker/rails/start-server.sh /start-server.sh
+RUN chmod +x /start-server.sh
 
+# Rails app startup
+EXPOSE 3000
 CMD ["/start-server.sh"]

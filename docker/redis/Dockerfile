@@ -4,7 +4,7 @@ MAINTAINER Mossuru777 "mossuru777@gmail.com"
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get -y update
-RUN apt-get install -y -q python-software-properties software-properties-common
+RUN apt-get install -y -q software-properties-common
 
 RUN add-apt-repository ppa:chris-lea/redis-server
 RUN apt-get update

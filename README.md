@@ -9,13 +9,6 @@ Local setup
   - [Vagrant](https://www.vagrantup.com) >=1.6
 
 
-- Download host OS image for docker host OS.
-
-```
-% vagrant box add precise64 http://files.vagrantup.com/precise64.box
-```
-
-
 - Build Docker images and run containers.
   - This would take 30 minutes.
   - Password of your host OS is required to mount current directory by NFS.
@@ -67,7 +60,7 @@ cmd "bundle exec something" - Run the command in quotes in /app
 - Just want to get a rails server instance.
 
 ```
-$ docker run -it -v /app:/app --link redis:redis --link mysql:db rails:latest /bin/bash
+$ docker run -it -v /app:/app -v /persistent --link redis:redis --link mysql:db rails:latest /bin/bash
 ```
 
 - To acquire console of rails server

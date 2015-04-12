@@ -1,6 +1,9 @@
 # Commands required to setup working docker enviro, link
 # containers etc.
 $setup = <<SCRIPT
+# Copy authorized_keys to /app to prepare ssh server
+cp /home/vagrant/.ssh/authorized_keys /app/authorized_keys
+
 # Stop and remove any existing containers
 docker stop $(docker ps -a -q)
 docker rm $(docker ps -a -q)
@@ -13,7 +16,10 @@ docker build -t redis /app/docker/redis/
 # Run and link the containers
 docker run -d --name mysql -e DB_NAME=dpa_development -e DB_USER=docker -e DB_PASS=docker mysql:latest
 docker run -d --name redis redis:latest
-docker run -d -p 3000:3000 -v /app:/app -v /persistent --link redis:redis --link mysql:db --name rails rails:latest
+docker run -d -p 3000:3000 -p 22222:22 -v /app:/app -v /persistent --link redis:redis --link mysql:db --name rails rails:latest
+
+# Remove copied authorized_keys
+rm -f /app/authorized_keys
 
 SCRIPT
 
@@ -40,6 +46,7 @@ Vagrant.configure("2") do |config|
 
   # Rails Server Port Forwarding
   config.vm.network "forwarded_port", guest: 3000, host: 3000
+  config.vm.network "forwarded_port", guest: 22222, host: 22222
 
   # Ubuntu
   config.vm.box = "ubuntu/trusty64"
